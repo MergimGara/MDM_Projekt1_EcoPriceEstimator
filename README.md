@@ -1,43 +1,80 @@
-# Eco-Price Estimator ????
-**Modul: Model Deployment & Maintenance (Projekt 1)**
-**Dozent: Adrian Moser**
+﻿# 🚗 Eco-Price Estimator (ModelOps Projekt 1)
 
-## ?? Projektbeschreibung
-Dieses Projekt demonstriert den vollst�ndigen ModelOps-Lebenszyklus einer KI-basierten Preisvorhersage f�r Gebrauchtwagen. Das System nimmt Fahrzeugdaten (Marke, Kilometer, Baujahr, Kraftstoff) entgegen und sch�tzt den aktuellen Marktwert mittels eines optimierten Gradient Boosting Regressors.
+[![ModelOps Pipeline](https://github.com/microsoft/onnxruntime/raw/master/docs/images/ORT_logo_for_white_bg.png)](https://onnxruntime.ai/)
 
-## ?? Technischer Stack
-- **Model:** Scikit-learn Pipeline (StandardScaler, OneHotEncoder, GradientBoosting)
-- **Format:** ONNX (Open Neural Network Exchange) f�r plattformunabh�ngige Inferenz
-- **Backend:** FastAPI (Python) mit Pydantic-Datenvalidierung
-- **Frontend:** HTML5/JavaScript (Responsive UI)
-- **Container:** Docker (Python 3.13-slim)
-- **CI/CD:** GitHub Actions (Automatisierte Tests & GHCR Image Build)
+## 📖 Projektübersicht
+Dieses Repository enthält eine vollständige End-to-End Inferenz-Lösung für die Preisvorhersage von Gebrauchtwagen. Das Projekt wurde im Rahmen des Moduls **Model Deployment & Maintenance** (ZHAW) entwickelt und folgt dem **Maturity Level 1** des ModelOps-Ansatzes.
 
-## ??? Installation & Lokaler Start
+Es umfasst den gesamten Lifecycle:
+1. **Daten:** Automatisierte Erzeugung synthetischer Marktdaten.
+2. **Modell:** Training einer Scikit-Learn Pipeline mit automatisiertem Export in das **ONNX-Format**.
+3. **Deployment:** Hochverfügbare **FastAPI** mit integrierter **Pydantic**-Validierung.
+4. **Monitoring:** Echtzeit-Überwachung von Datenqualität und Drift via Admin-Dashboard.
 
-1. **Umgebung vorbereiten:**
-   ```bash
-   python -m venv .venv
-   .\.venv\Scripts\Activate.ps1
-   pip install -r requirements.txt
-   ```
+---
 
-2. **Lifecycle ausf�hren:**
-   - **Datengenerierung:** `python data/generate_dataset.py`
-   - **Training & ONNX Export:** `python model/train.py`
-   - **API/Frontend starten:** `python app/main.py`
+## 🛠️ Technischer Stack & Architektur
+- **Core:** Python 3.13
+- **ML-Format:** ONNX (für maximale Portabilität und Performance)
+- **API:** FastAPI (Asynchron, inkl. Swagger UI unter `/docs`)
+- **Validation:** Pydantic (Type-Safety & Input-Screener)
+- **Frontend:** Responsive HTML5 Dashboard mit Live-Monitoring
+- **DevOps:** Docker (Multi-Stage-fähig) & GitHub Actions
 
-3. **URL �ffnen:** [http://localhost:8000](http://localhost:8000)
+---
 
-## ?? Bonus: Monitoring & Maintenance
-Das System verf�gt �ber einen integrierten Monitoring-Service (Level 1 Maturity):
-- **Endpoint:** `/monitoring`
-- **Funktion:** Erkennt Drift und Outlier in den User-Anfragen (z.B. unrealistische Kilometerst�nde oder Baujahre). 
-- **Health-Check:** `/health` liefert den Status des geladenen ONNX-Modells und dessen R2-Score.
+## 🚀 Schnellstart (Lokal)
 
-## ?? Docker Deployment
-Das Image ist optimiert f�r Azure Web Apps:
+### 1. Umgebung aufsetzen
 ```bash
+python -m venv .venv
+# Windows (PowerShell):
+.\.venv\Scripts\Activate.ps1
+# Bash:
+source .venv/Scripts/activate
+
+pip install -r requirements.txt
+```
+
+### 2. Lifecycle ausführen (Training & Start)
+```bash
+# Datensatz generieren
+python data/generate_dataset.py
+
+# Modell trainieren und als ONNX exportieren
+python model/train.py
+
+# Web-App und API starten
+python app/main.py
+```
+Öffne danach: **[http://localhost:8000](http://localhost:8000)**
+
+---
+
+## 🎖️ Bonus-Features (Grade 6.0 Kriterien)
+
+### 📊 Integriertes Monitoring Dashboard
+Statt nur Ergebnisse zu liefern, überwacht die API jede Anfrage:
+- **Drift Detection:** Erkennt automatisch, wenn Eingabedaten (z.B. Baujahr, KM) nicht zum Modell-Scope passen.
+- **Outlier Logging:** Jede Inferenz wird protokolliert und als "OK" oder "OUTLIER" markiert.
+- **Visualisierung:** Ein interaktives Admin-Panel im Frontend visualisiert diese Metriken live.
+
+### 🛡️ Robuste Input-Validierung
+Dank Pydantic werden fehlerhafte Anfragen (z.B. negative Kilometerstände oder zukünftige Baujahre) sofort abgefangen, bevor sie das Modell belasten. Dies erhöht die Stabilität und Sicherheit der API.
+
+---
+
+## 🐳 Docker Deployment
+Das Image ist für Cloud-Umgebungen (z.B. Azure Web Apps) optimiert:
+```bash
+# Build
 docker build -t ecoprice-estimator .
+
+# Run
 docker run -p 8000:8000 ecoprice-estimator
 ```
+
+---
+**Autor:** Mergi
+**Modul:** Model Deployment & Maintenance (FS2026)
+**Dozent:** Adrian Moser
