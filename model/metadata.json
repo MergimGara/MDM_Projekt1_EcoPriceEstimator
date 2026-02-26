@@ -1,0 +1,17 @@
+{
+    "brands": [
+        "Audi",
+        "BMW",
+        "Ford",
+        "Tesla",
+        "Toyota",
+        "VW"
+    ],
+    "fuel_types": [
+        "Diesel",
+        "Electric",
+        "Gasoline",
+        "Hybrid"
+    ],
+    "r2_score": 0.9703461469931567
+}
