@@ -75,6 +75,6 @@ docker run -p 8000:8000 ecoprice-estimator
 ```
 
 ---
-**Autor:** Mergi
+**Autor:** Mergim Gara
 **Modul:** Model Deployment & Maintenance (FS2026)
 **Dozent:** Adrian Moser
